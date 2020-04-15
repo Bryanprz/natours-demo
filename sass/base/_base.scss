@@ -1,0 +1,22 @@
+// Handles low-level stylings and basic project definitions; project boilerplate
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  /* default px font size in browsers is 16px */
+  /*we want default 10px but do not want to override user font size*/
+  /*so (10/16)*100 = 62.5% font size*/
+
+  // This defines what 1rem is
+  font-size: 62.5%;
+}
+
+body {
+  box-sizing: border-box;
+}

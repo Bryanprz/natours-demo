@@ -1,0 +1,48 @@
+.composition {
+  position: relative; // so that this el is parent of __photo position:abs
+
+  &__photo {
+    width: 55%; // so that imgs are responsive
+    box-shadow: 0 1.5rem 4rem rgba($color-black, .4);
+    border-radius: 2px;
+
+    // sets el according to reference, which is the first parent
+    // it encounters that has its position set to something
+    position: absolute;
+    z-index: 10;
+    transition: all .2s;
+    outline-offset: 2rem; //sets space between outline and content
+
+    &--p1 {
+      left: 0;
+      top: -2rem; // move it upwards
+    }
+
+    &--p2 {
+      right: 0; // make el start at right side
+      top: 2rem; //make it start 2rem from top
+    }
+
+    &--p3 {
+      left: 20%;
+      top: 10rem;
+    }
+
+    &:hover {
+      // similar to setting a border but allows an offset
+      outline: 1.5rem solid $color-primary;
+      transform: scale(1.05) translateY(-.5rem);
+      box-shadow: 0 2.5rem 4rem rgba($color-black, .5);
+      z-index: 20;
+    }
+  }
+
+  // select hover on entire composition element
+  // then select photos that are nested inside
+  // then select photos that are not being hovered
+
+  // e.g. composition:hover composition__photo:not(:hover)
+  &:hover &__photo:not(:hover) {
+    transform: scale(.9);
+  }
+}

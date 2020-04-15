@@ -1,0 +1,131 @@
+.btn {
+  // do the following because btn doesn't have :link and :visited, those are for links (a elements)
+  &, // adding this will apply all classes below (from linked and visited) to btn
+  &:link,
+  &:visited {
+    font-size: $default-font-size;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1.5rem 4rem;
+    display: inline-block;
+    border-radius: 10rem;
+    position: relative; /*make this el parent of child/pseudoel w pos:abs*/
+
+    /*transition declaration on initial state of element*/
+    /*this animates the transform effects from pseudoclasses*/
+    transition: all .2s;
+
+    // Change for the <button> element
+    border: none;
+    cursor: pointer;
+  }
+
+  &:hover {
+    /*transformations on pseudoclasses (states) of element*/
+    transform: translateY(-.3rem);
+    box-shadow: 0 1rem 2rem rgba($color-black, .2); /* x-shadow, y-shadow, blur, color */
+
+    &::after {
+      /*make pseudoel behind target el 1.5 times bigger during hover state*/
+      /*also creates the neg animation when hover state deactivated*/
+      transform: scaleX(1.4) scaleY(1.6);
+
+      /*make pseudoel fade out in hover state*/
+      opacity: 0;
+    }
+  }
+
+  //set focus state to be same as active state
+  &:active,
+  &:focus {
+    outline: none; // set to none so only below classes are applied
+    transform: translateY(-.1rem);
+    box-shadow: 0 .5rem 1rem rgba($color-black, .2); /* x-shadow, y-shadow, blur, color */
+  }
+
+  &--white {
+    background-color: $color-white;
+    color: $color-grey-dark;
+
+    &::after {
+      background-color: $color-white;
+    }
+  }
+
+  &--green {
+    background-color: $color-primary;
+    color: $color-white;
+
+    &::after {
+      background-color: $color-primary;
+    }
+  }
+
+  &::after {
+    /*::after creates child el directly behind target el*/
+    /*content property is required for ::after pseudoelement to work*/
+    /*this is what gives content to the pseudoelement created behind*/
+    /*target element*/
+    content: "";
+
+    /*pseudoelement should be identical to target element*/
+    /*so give it same display property*/
+    display: inline-block;
+
+    /*pseudoelement is treated like child of target element*/
+    /*dimensions here are in relation to target/parent element*/
+    height: 100%;
+    width: 100%;
+    border-radius: 10rem;
+
+    /*place pseudoelement behind target element with pos:abs*/
+    /*pos:abs needs a reference in parent w pos:rel*/
+    /*since we want target element btn to be main parent that this */
+    /*pseudoel hides behind, make that the parent el w pos:rel*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; /* puts el behind parent */
+
+    /*transition prop needs to be on initial state*/
+    /*this is initial state of btn:hover::after (second state)*/
+    /*hover is the state action being tracked by transition*/
+    transition: all .4s;
+  }
+
+  &--animated {
+    animation: moveInBottom .5s ease-out .75s;
+
+    /*automatically apply keyframe styles at 0% before animation starts*/
+    /*allows button to be set at translateY(3rem) before being*/
+    /*animated, giving it effect of coming onto page*/
+    animation-fill-mode: backwards;
+  }
+}
+
+.btn-text {
+  &:link,
+  &:visited {
+    font-size: $default-font-size;
+    color: $color-primary;
+
+    // so we can use box-model properties on it like padding and margin
+    display: inline-block;
+    text-decoration: none; // no default underlining
+    border-bottom: 1px solid $color-primary; // allows us to create padding
+    padding: 3px; // small value so we can use px here
+    transition: all .2s;
+  }
+
+  &:hover {
+    background-color: $color-primary;
+    color: $color-white;
+    box-shadow: 0 1rem 2rem rgba($color-black, .15);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    box-shadow: 0 .5rem 1rem rgba($color-black, .15);
+    transform: translateY(0px);
+  }
+}

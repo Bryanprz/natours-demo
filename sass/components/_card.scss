@@ -1,0 +1,217 @@
+// CARD ROTATION HAPPENS INSIDE THIS ENTIRE .CARD
+.card {
+  // FUNCTIONALITY
+  // perspective needs to apply to parent el
+  // of whatever child element is having hover transform applied to it
+  perspective: 300rem; // the lower the value, the more dramatic the effect
+  -moz-perspective: 150rem; // required to work in firefox browsers
+  position: relative; // for child .card__side pos:abs to work
+  height: 52rem;
+
+  // .card__side selector common to both --front and --back modifiers
+  &__side {
+    border-radius: 3px;
+    box-shadow: 0 1.5rem 4rem rgba($color-black, .15);
+
+    // this element (.card__side) is parent of .card__picture--1
+    // which has a background image applied to it. that image covers
+    // the border-radius rounded corners. Overflow:hidden fixes that
+    // so borders applied are from actual parent, not bckgrnd image
+    overflow: hidden;
+
+    // if last arg (timing func) is not specified, transition uses
+    // the simplest timing func for animation.
+    // for this animation best one to use is ease to smoothen transition
+    transition: all .8s ease;
+
+    // set both --front and --back sides to same position so they are
+    // on top of one another, giving effect of two sides of one card
+
+    // when setting pos:abs, this takes els out of their natural flow
+    // sometimes causing height collapse on .card (parent)
+    // when this happens with floats we hack with clearfix
+    // but with pos:abs there's no such thing.
+    // to fix thru css only, specify same height to .card (parent)
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 52rem;
+
+    // both elements will only fit width to their content bc of pos:abs
+    // so tell them to fit parent width
+    width: 100%;
+
+    // if set to hidden, this hides the backpart of an element when viewing
+    // from front
+    backface-visibility: hidden;
+
+    &--front {
+      background-color: $color-white;
+    }
+
+    &--back {
+
+      // back side is ALREADY rotated 180deg without hover
+      // when hover occurs, back side rotates back to 0 as front rotates to 180
+      // hover: back 180 -> 0; front 0 -> 180
+      // so set backside to begin already at 180deg and on hover, set to 0
+      transform: rotateY(180deg);
+
+      &-1 {
+        background-image: linear-gradient(to right bottom, $color-secondary-light, $color-secondary-dark);
+      }
+
+      &-2 {
+        background-image: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark);
+      }
+
+      &-3 {
+        background-image: linear-gradient(to right bottom, $color-tertiary-light, $color-tertiary-dark);
+      }
+    }
+  }
+
+  // .card:hover .card__side { transform }
+  // i.e. when .card hovers, apply transform to .card__side
+  &:hover &__side--front {
+    transform: rotateY(-180deg);
+  }
+
+  &:hover &__side--back {
+    transform: rotateY(0);
+  }
+
+  // FRONT SIDE STYLING
+  // BACKGROUND IMAGE BLENDING
+  &__picture {
+    // &--1, &--2,etc will inherit this background size
+    background-size: cover; // for backgroundimage in children
+    height: 23rem;
+    background-blend-mode: screen;
+
+    // vendor prefix clip-path with webkit bc it's a modern css property
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+
+    // polygon coord args: top-left, top-right, bottom-right, bottom-left
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+
+    // clip-path messes up overflow:hidden in parent and breaks rounded corns
+    // fix by setting manually here
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+
+    &--1 {
+      // img path assumes relative from style/css; post compilation
+      background-image: linear-gradient(to right bottom, $color-secondary-light, $color-secondary-dark),
+      url(../img/nat-5.jpg);
+    }
+
+    &--2 {
+      // img path assumes relative from style/css; post compilation
+      background-image: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark),
+      url(../img/nat-6.jpg);
+    }
+
+    &--3 {
+      // img path assumes relative from style/css; post compilation
+      background-image: linear-gradient(to right bottom, $color-tertiary-light, $color-tertiary-dark),
+      url(../img/nat-7.jpg);
+    }
+  }
+
+  &__heading {
+    font-size: 2.8rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    text-align: right;
+    color: $color-white;
+    position: absolute;
+    top: 12rem;
+    right: 2rem;
+    width: 75%;
+  }
+
+  // this is not a child or modifier of &__heading, hence declare it
+  // w/o nesting under &__heading
+  &__heading-span {
+    padding: 1rem 1.5rem;
+
+    // heading currently is treated as single line of text, so padding
+    // only applies to left and right side, but text is actually breaking
+    // on two lines. we want to treat both lines of text as independent so
+    // padding can be applied. So we use box-decoration-break clone
+
+    // must use webkit prefix bc this is new css
+    // clone means apply all properties that apply to this selector
+    // to all boxes (clones) created by this element
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+
+    &--1 {
+      background-image: linear-gradient(to right bottom,
+      rgba($color-secondary-light, .85),
+      rgba($color-secondary-dark, .85));
+    }
+
+    &--2 {
+      background-image: linear-gradient(to right bottom,
+      rgba($color-primary-light, .85),
+      rgba($color-primary-dark, .85));
+    }
+
+    &--3 {
+      background-image: linear-gradient(to right bottom,
+      rgba($color-tertiary-light, .85),
+      rgba($color-tertiary-dark, .85));
+    }
+  }
+
+  &__details {
+    padding: 3rem;
+
+    ul {
+      list-style: none;
+
+      // margin: 0 auto; this centers block child elements (li) that are inside
+      // another block element (ul)
+      margin: 0 auto;
+      width: 80%;
+
+      li {
+        text-align: center;
+        font-size: 1.5rem;
+        padding: 1rem;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid $color-grey-light-2;
+        }
+      }
+    }
+  }
+
+  // BACK SIDE STYLING
+  &__cta {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); // translate element left and up by half to center
+    width: 90%;
+    text-align: center;
+  }
+
+  &__price-box {
+    text-align: center;
+    margin-bottom: 8rem;
+    color: $color-white;
+  }
+
+  &__price-only {
+    font-size: 1.4rem;
+    text-transform: uppercase;
+  }
+
+  &__price-value {
+    font-size: 6rem;
+    font-weight: 100;
+  }
+}

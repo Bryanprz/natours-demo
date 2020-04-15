@@ -1,0 +1,15 @@
+// !IMPORTANT
+// !important is a bad design pattern for CSS EXCEPT
+// in utilities classes. Why? Becuase utilities are short quick
+// styles applied to elements, and we want to override any other styles
+// quickly with these styles. Use !important only for these utilities.
+
+// centers inline-block children
+.u-center-text { text-align: center !important; }
+
+.u-margin-bottom-small { margin-bottom: 1.5rem !important; }
+.u-margin-bottom-medium { margin-bottom: 4rem !important; }
+.u-margin-bottom-big { margin-bottom: 8rem !important; }
+
+.u-margin-top-big { margin-top: 8rem !important; }
+.u-margin-top-huge { margin-top: 10rem !important; }

@@ -1,0 +1,175 @@
+.navigation {
+
+  &__checkbox {
+    display: none;
+  }
+
+  &__button {
+    background-color: $color-white;
+    height: 7rem;
+    width: 7rem;
+    border-radius: 50%;
+    position: fixed;
+    top: 6rem;
+    right: 6rem;
+    z-index: 2000;
+    box-shadow: 0 1rem 3rem rgba($color-black, .1);
+    text-align: center; // for centering pseudo lines
+    cursor: pointer;
+  }
+
+  &__background {
+    height: 6rem;
+    width: 6rem;
+    border-radius: 50%;
+
+    // doesn't change position while page scrolls'
+    // takes el out of flow and allows positioning in relation to a positioned element
+    position: fixed;
+    top: 6.5rem;
+    right: 6.5rem;
+
+    // radial gradient starts at element and goes outward in all directions
+    background-image: radial-gradient($color-primary-light, $color-primary-dark);
+
+    // z index only works on elements with positioned define, which this el does
+    z-index: 1000;
+
+    // find cubic-bezier timing functions (more dynamic timing functions)
+    // on easings.net
+    // or find a dynamic generator for cubic-bezier on cubic-bezier.com
+    transition: transform .8s cubic-bezier(0.86, 0, 0.07, 1);
+
+    //transform: scale(80);
+  }
+
+  &__nav {
+    height: 100vh;
+    position: fixed; // with nav open everything needs to stay in place
+    top: 0;
+    left: 0;
+    z-index: 1500;
+
+    // hide elements with opacity and width 0
+    opacity: 0;
+    width: 0;
+
+    // find cubic-bezier timing functions (more dynamic timing functions)
+    // on easings.net
+    // or find a dynamic generator for cubic-bezier on cubic-bezier.com
+    transition: all .8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  &__list {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    list-style: none;
+    text-align: center;
+    width: 100%;
+  }
+
+  &__item {
+    margin: 1rem;
+  }
+
+  &__link {
+    &:link,
+    &:visited {
+      // without inline block padding and active:transform will not be applied
+      display: inline-block;
+      font-size: 3rem;
+      font-weight: 300;
+      color: $color-white;
+      text-decoration: none;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      background-image: linear-gradient(120deg, transparent 50%, transparent 50%, $color-white 50%);
+
+      // move element to right side by making size bigger than visible box
+      // on active state move el back to normal position, showing the white linear gradient
+      // half
+      background-size: 235%;
+      transition: all .4s;
+    }
+
+    &:hover,
+    &:active {
+      background-position: 100%;
+      color: $color-primary;
+      transform: translateX(1rem);
+    }
+  }
+
+  // FUNCTIONALITY
+
+  &__checkbox:checked ~ &__background {
+    transform: scale(80);
+  }
+
+  &__checkbox:checked ~ &__nav {
+    // remove opacity and width 0 to show elemens on page
+    opacity: 1;
+    width: 100%;
+  }
+
+  // ICON
+
+  &__icon {
+    // parent el of pseudos below, specify pos
+    position: relative;
+    margin-top: 3.5rem;
+
+    &, // icon element itself
+    &::before, // top line
+    &::after { // bottom line
+      width: 3rem;
+      height: 2px;
+      background-color: $color-grey-dark-3;
+      display: inline-block;
+    }
+
+    &::before,
+    &::after {
+      // have to define content so element appears on page
+      content: "";
+      position: absolute;
+      left: 0;
+      transition: all .2s;
+    }
+
+    &::before { top: -.8rem; }
+    &::after { top: .8rem; }
+  }
+
+  // icon is child of button so this works better
+  &__button:hover &__icon::before {
+    top: -1rem;
+  }
+
+  &__button:hover &__icon::after {
+    top: 1rem;
+  }
+
+  &__checkbox:checked + &__button &__icon {
+    // make middle line of menu btn invisible on checking (clicking) menu btn
+    // don't do this by removing size because ::before and ::after els depend
+    // on this el's size, so instead use b-color transparent
+    background-color: transparent;
+  }
+
+  &__checkbox:checked + &__button &__icon::before {
+    // idea is to rotate both lines 45 and -45 degs from original position
+    // to give it a full rotation before ending pos of +-45d,
+    // subtract 45deg from 180deg (a full rotation) to achieve effect
+    // 180 - 45 = 135
+    transform: rotate(135deg);
+    top: 0;
+  }
+
+  &__checkbox:checked + &__button &__icon::after {
+    transform: rotate(-135deg);
+    top: 0;
+  }
+}

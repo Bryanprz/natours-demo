@@ -1,0 +1,23 @@
+.bg-video {
+  // takes element away from normal page flow
+  // needed here to position element as background img of other elements
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  opacity: .15;
+  overflow: hidden;
+
+  &__content {
+    height: 100%;
+    width: 100%;
+
+    // similar to background-size: cover with images, but works with HTML5 elements (like video or images)
+    // in this case the element will fill entire parent (bc of height/width:100%)
+    // while still maintaining its aspect ratio
+    // parts of element that dont fit parent will simply be clipped off
+    object-fit: cover;
+  }
+}

@@ -1,0 +1,97 @@
+.story {
+  width: 75%;
+  margin: 0 auto; // block el inside block el
+  box-shadow: 0 3rem 6rem rgba($color-black, .1);
+
+  // opacity is here at 60%
+  // have to set opacity here in background-color so that the content
+  // (text and images) are not set to opacity as well
+  // we want only the background to be opaque
+  background-color: rgba($color-white, .6);
+  border-radius: 3px;
+  padding: 6rem;
+  padding-left: 9rem;
+  font-size: $default-font-size;
+  transform: skewX(-12deg);
+
+  // Direct child selector. Selects everything that is child of .story
+  // this is so we can unskew the child el's so they look normal
+  & > * {
+    // will be overriden if child els have their own transform property
+    // (only one transform can be applied to an element)
+    // solution is to also apply skewX to child el &__shape's transform prop
+    transform: skewX(12deg);
+  }
+
+  &__shape {
+    width: 15rem;
+    height: 15rem;
+    float: left; // automatically sets other content to float right
+    position: relative; // for children with pos:absolute
+
+    // STYLES OUTER TEXT WITH CIRCLE LAYOUT
+    // arg is radius of circle
+    // in this case will be 50% of 15rem width/height
+    // at 50% 50% means will be centered in middle of circle
+    // in order for this to work element must float
+    // in order to work element must define dimensions (width/height)
+    -webkit-shape-outside: circle(50% at 50% 50%); // safari vendor
+    shape-outside: circle(50% at 50% 50%);
+
+    // TURNS ELEMENT INTO CIRCLE SHAPE
+    -webkit-clip-path: circle(50% at 50% 50%);
+    clip-path: circle(50% at 50% 50%);
+
+    // BEST WAY TO MOVE AN ELEMENT THAT IS FLOATED:
+    // Dont mess around with margins or anything like that.
+    // just use *transform*
+    // moves element 3rem to the left
+    transform: translateX(-3rem) skewX(12deg);
+  }
+
+  // Flexible images for responsive web design always need a width/height
+  &__img {
+    // 100% height bc el is inside a shape (story__shape) that has well-defined
+    // dimensions
+    height: 100%;
+    transform: translateX(-4rem) scale(1.4);
+    transition: all .5s;
+    backface-visibility: hidden;
+  }
+
+  &__text {
+    transform: skewX(12deg);
+  }
+
+  &__caption {
+    position: absolute; // requires parent (story__shape) to have position:relative
+    top: 50%;
+    left: 50%;
+
+    // to center content of el in relation to its absolute positioning
+    transform: translate(-50%, 20%);
+    color: $color-white;
+    text-transform: uppercase;
+    font-size: 1.7rem;
+    text-align: center;
+    opacity: 0;
+    transition: all .5s;
+    backface-visibility: hidden; // fixes shaking that happens at end of animation
+  }
+
+  &:hover &__caption {
+    opacity: 1;
+
+    // must be identical prop value as non-hover __caption to override upon hover
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover &__img {
+    transform: translateX(-4rem) scale(1);
+
+    // brightness: values < 100% => darker
+    // brightness: values > 100% => lighter
+    // brightness: values = 100% => original
+    filter: blur(3px) brightness(80%);
+  }
+}

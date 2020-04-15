@@ -1,0 +1,29 @@
+.feature-box {
+  background-color: rgba($color-white, .8);
+
+  // child el that are text will inherit font size, eg feature-box__text
+  font-size: 1.5rem;
+  padding: 2.5rem;
+  text-align: center;
+  border-radius: 3px;
+  box-shadow: 0 1.5rem 4rem rgba($color-black, .15);
+  transition: transform .2s; // can target specific animation by name
+
+  // icons are essentially fonts so use font properties
+  &__icon {
+    font-size: 6rem;
+
+    // -------- NEXT 5 LINES ARE FOR LINEAR GRADIENT ON TEXT OR ICON --------
+    display: inline-block;
+    margin-bottom: .5rem;
+    color: transparent;
+    background-image: linear-gradient(to right, $color-primary-light, $color-primary-dark);
+    -webkit-background-clip: text; // clip bg exactly where text is
+    // -------- NEXT 5 LINES ARE FOR LINEAR GRADIENT ON TEXT --------
+  }
+
+  &:hover {
+    // parent el targeting with transition: transform
+    transform: scale(1.03) translateY(-1.5rem);
+  }
+}

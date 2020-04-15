@@ -1,0 +1,7 @@
+@mixin clearfix {
+  &::after {
+    content: ""; // so that the pseudoelement behind target el appears on page
+    display: table; // standard version of clearfix hack
+    clear: both; // clears floats whether left or right
+  }
+}

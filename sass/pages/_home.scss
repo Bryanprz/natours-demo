@@ -1,0 +1,75 @@
+.section-about {
+  background-color: $color-grey-light-1;
+  padding: 25rem 0; // expands element vertically
+
+  // comes from difference left by header polygon
+  // header 95vh - polygon height 75vh = 20vh
+  margin-top: -20vh;  // move el up -20vh
+}
+
+.section-features {
+  padding: 20rem 0; // provides visual height (not actual height metric)
+  background-image: linear-gradient(
+    to right bottom,
+    rgba($color-primary-light, 0.8),
+    rgba($color-primary-dark, 0.8)),
+  url(../img/nat-4.jpg);
+
+  // almost always put this when using bg images to cover section
+  background-size: cover;
+
+  // css trick to skew entire section sideways, like clip-path: polygon
+  transform: skewY(-7deg);
+  margin-top: -10rem;
+
+  // select all direct children of section-features
+  // i.e., select ONLY the direct child, and not grandchildren, to skew
+  // otherwise all grandchildren would be skewed, causing skew in pos direction
+  // skew opposite direction to cancel out parent skew only on direct ch
+  & > * {
+    transform: skewY(7deg);
+  }
+}
+
+.section-tours {
+  background-color: $color-grey-light-1;
+  padding: 25rem 0 15rem 0; // expands element vertically
+  margin-top: -10rem;
+}
+
+.section-stories {
+  padding: 15rem 0;
+  position: relative; // so .bg-video pos:abs works
+}
+
+.section-book {
+  padding: 15rem 0;
+  background-image: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark)
+}
+
+.book {
+  // Another way to do clip path borders is to use a gradient
+  // Putting two color values at same percenteage as arg to linear-gradient
+  // puts a bound on where gradient ends. If two colors end their gradient
+  // at same percentage, like white and orangered below, the effect is a solid
+  // straight line separating the two colors. First color has a transparency which
+  // allows to see the background image. second color has no transparency so it
+  // appears solid. slope of line comes from first arg to l-g, 105deg
+  background-image: linear-gradient(105deg,
+                      rgba($color-white, .9) 0%,
+                      rgba($color-white, .9) 50%,
+                      transparent 50%), // valid css color
+                      // for testing
+                      //orangered 50%),
+                    url(../img/nat-10.jpg);
+  background-size: cover; // same thing as 100%
+  border-radius: $round-borders;
+  box-shadow: 0 1.5rem 4rem rgba($color-black, .4);
+
+  height: 50rem;
+
+  &__form {
+    width: 50%;
+    padding: 6rem;
+  }
+}

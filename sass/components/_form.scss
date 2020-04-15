@@ -1,0 +1,166 @@
+.form {
+  &__group:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
+  &__input {
+    font-size: 1.5rem;
+    font-family: inherit; // inherit from font family. input els dont inherit automatically
+    padding: 1.5rem 2rem;
+    border-radius: 2px;
+    // inherit font color because inputs do not inherit automatically by browsers
+    color: inherit;
+    background-color: rgba($color-white, .5);
+    border: none;
+
+    // add same border height (3px) as the focused state, but set to transparent
+    // so border is invisible. this is so focusing doesn't move the bottom input el
+    border-bottom: 3px solid transparent;
+    width: 90%;
+    display: block;
+    transition: all .5s; // for animating bottom border on clicking into input
+
+    // Only works on Safari and Chrome
+    // sudo element, represented with 2 ::
+    // sudo els represent things that are actually on the webpage
+    // as opposed to pseudo class like :focus that represents the current
+    // state of an element
+    &::-webkit-input-placeholder {
+      color: $color-grey-dark-2;
+    }
+
+    &:focus {
+      // border that appears when input is focused. from browsers by default
+      outline: none;
+
+      // for accesibility purposes it should always have some visible marker
+      box-shadow: 0 1rem 2rem rgba($color-black, .1);
+      border-bottom: 3px solid $color-primary;
+    }
+
+    // Browsers like Chrome automatically invalidate an input of type
+    // email (for example) if given value is invalid
+    // invalid and valid are pseudoclass selectors in CSS
+    &:focus:invalid {
+      border-bottom: 3px solid $color-secondary-dark;
+    }
+  }
+
+
+  // trick for making placeholder text float downwards upon entering value
+  &__label {
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    // set element to be in line with element below
+    margin-left: 2rem;
+    margin-top: .7rem;
+    // setting element as block allows us to use box-model properties like
+    // margin-left and margin-top
+    display: block;
+    transition: all .3s;
+  }
+
+
+  // select input:placeholder but don't style input, style label, so we place this
+  // in this selector for that reason
+  // + is adjacent sibling selector
+  // notice label and input are html siblings, so + is required
+
+  // if elements are not immediate (adjacent) siblings, then use ~ instead of +
+  // ~ general sibling selector
+
+  // element we select always has to be after first. order matters
+  &__input:placeholder-shown + &__label {
+    // does not remove element, just sets opacity to 0. for animation
+    opacity: 0;
+
+    // removes element completely from page
+    // we use opacity because we cannot animate visibility, but we CAN
+    // animate opacity
+    visibility: hidden;
+    transform: translateY(-4rem);
+  }
+
+  &__radio-group {
+    width: 49%;
+
+    // show all radio groups on same line
+    // better than using floats
+    display: inline-block;
+  }
+
+  &__radio-input {
+    display: none; // hide normal radio input so we can use custom ones below
+  }
+
+  &__radio-label {
+    font-size: $default-font-size;
+    cursor: pointer; // UI - show user this is clickable
+
+    // this el is parent of radio-button, which uses pos:abs, so this parent
+    // needs pos:rel (or pos:abs) for child abs positioning to work
+    position: relative;
+    padding-left: 5rem;
+  }
+
+  &__radio-button {
+    // outer and inner dots
+
+    // same height and width to make a circle
+    height: 3rem;
+    width: 3rem;
+    border: 5px solid $color-primary;
+    border-radius: 50%;
+
+    // above properties only work if we make this el a block or inl-block el
+    display: inline-block;
+
+    // use absolute positionning to fine tune placement on page
+    // remember for pos:abs to work parent needs to be pos:relative
+
+    // this el is also parnet of pseudoel &::after, which is also using
+    // pos:abs. parent el doesn't need to have pos:rel, can also be pos:abs
+    position: absolute;
+    left: 0;
+    top: -.4rem;
+
+    // for making inner dot
+    &::after {
+      //specify content property anytime you use a pseudoel
+      content: "";
+
+      // specify display anytime you set a pseudoel
+      display: block;
+
+      // circle = same height and width, and border-radius 50%
+      height: 1.3rem;
+      width: 1.3rem;
+      border-radius: 50%;
+
+      // we want to position exactly in center of outer circle
+      // so use pos:abs
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%);
+      background-color: $color-primary;
+
+      // make invisible unless selected
+      opacity: 0;
+      transition: opacity .2s;
+    }
+  }
+
+  // :checked pseudoclass operates on checked radio buttons
+  // select with this selector but apply styles to label, not radio-input
+  // target el is radio-button, which is a child of label, which is a sibling
+  // of radio-input, which is the actual el that has :checked pseudoclass
+  // so to get to radio-button we select radio-input AND it's sibling (+) and
+  // then select the child radio-button
+  // ::after pseudoelement just selects the inner circle (same as selector above)
+  &__radio-input:checked ~ &__radio-label &__radio-button::after {
+    opacity: 1;
+  }
+
+}

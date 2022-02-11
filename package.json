@@ -10,7 +10,7 @@
   "author": "Bryan Perez",
   "license": "ISC",
   "devDependencies": {
-    "node-sass": "^4.13.0"
+    "node-sass": "^7.0.0"
   },
   "engines": {
     "node": "9.10.x"
